@@ -12,7 +12,6 @@ process songScoreDownload {
     input:
     val apiToken
     val analysisId
-    val apiKey
 
     output:
     file 'analysis.json'
