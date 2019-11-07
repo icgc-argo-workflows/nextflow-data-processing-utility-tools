@@ -7,12 +7,7 @@ process songScoreUpload {
     cpus params.cpus
     memory "${params.mem} MB"
 
-    container 'lepsalex/song-score'
-
-    env:
-    ACCESSTOKEN = apiToken
-    METADATA_URL = params.songURI
-    STORAGE_URL = params.scoreURI
+    container 'icgc-argo/song-score'
 
     input:
     val apiToken
@@ -24,12 +19,18 @@ process songScoreUpload {
 
     // rob will make sing submit extract study from payload
     """
+    export ACCESSTOKEN=${apiToken}
+    export METADATA_URL=${params.songURI}
+    export STORAGE_URL=${params.scoreURI}
+
     sing configure --server-url ${params.songURI} --access-token ${apiToken}
     sing submit -f ${payload} > output.json
     sing manifest -a `cat output.json | jq .analysisId` -d . -f manifest.txt
 
     score-client upload --manifest manifest.txt
+
     sing publish -a `cat output.json | jq .analysisId`\
+    
     cat output.json | jq .analysisId
     """
 }
