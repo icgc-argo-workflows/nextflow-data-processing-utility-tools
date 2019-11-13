@@ -24,6 +24,6 @@ process songScoreDownload {
 
     curl -X GET "${params.song_url}/studies/$studyId/analysis/$analysisId" -H  "accept: */*" > analysis.json
     
-    cat analysis.json | jq -r '.file[].objectId' | while IFS=$'\\\t' read -r objectId; do score-client download --object-id "\\\$objectId" --output-dir ./out; done
+    cat analysis.json | jq -r '.file[].objectId' | while IFS=\$'\\\t' read -r objectId; do score-client download --object-id "\$objectId" --output-dir ./out; done
     """
 }
