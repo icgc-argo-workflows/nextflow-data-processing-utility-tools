@@ -7,7 +7,7 @@ process songScoreDownload {
     cpus params.cpus
     memory "${params.mem} MB"
  
-    container 'icgc-argo/song-score'
+    container 'lepsalex/song-score-jq'
 
     input:
         val studyId
@@ -16,16 +16,14 @@ process songScoreDownload {
     output:
         tuple file('analysis.json'), file('./out/*')
 
-    // doesn't exist yet, Roberto will make it happen
-    // rob will make sing submit extract study from payload
+
     """
     export ACCESSTOKEN=${params.api_token}
     export METADATA_URL=${params.song_url}
     export STORAGE_URL=${params.score_url}
 
-    sing configure --server-url ${params.song_url} --access-token ${params.api_token}
-    sing get --studyId ${studyId} --analysisId ${analysisId} > analysis.json
+    curl -X GET "${params.song_url}/studies/${studyId}/analysis/${analysisId}" -H  "accept: */*" > analysis.json
     
-    score-client download --studyId ${studyId} --analysisId ${analysisId} --output-dir ./out
+    cat analysis.json | jq -r '.file[].objectId' | while IFS=$'\\t' read -r objectId; do score-client download --object-id "\$objectId" --output-dir ./out; done
     """
 }
