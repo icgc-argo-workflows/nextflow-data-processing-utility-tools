@@ -22,7 +22,7 @@ process songScoreDownload {
     export METADATA_URL=${params.song_url}
     export STORAGE_URL=${params.score_url}
 
-    curl -X GET '${params.song_url}/studies/${studyId}/analysis/${analysisId}' -H  'accept: */*' > analysis.json
+    curl -X GET \\"${params.song_url}/studies/${studyId}/analysis/${analysisId}\\" -H  \\"accept: */*\\" > analysis.json
     
     cat analysis.json | jq -r '.file[].objectId' | while IFS=$'\\t' read -r objectId; do score-client download --object-id "\$objectId" --output-dir ./out; done
     """
