@@ -7,7 +7,7 @@ process songScoreDownload {
     cpus params.cpus
     memory "${params.mem} MB"
  
-    container 'lepsalex/song-score-jq'
+    container 'lepsalex/song-score-jq:latest'
 
     input:
         val studyId

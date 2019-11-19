@@ -7,7 +7,7 @@ process songScoreUpload {
     cpus params.cpus
     memory "${params.mem} MB"
 
-    container 'lepsalex/song-score-jq'
+    container 'lepsalex/song-score-jq:latest'
 
     input:
         tuple path(payload), path(uploads)
