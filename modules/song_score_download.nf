@@ -37,6 +37,5 @@ workflow song_score_download {
         scoreDownload(songGetAnalysis.out.json)
 
     emit:
-        analysis_json = songGetAnalysis.out.json
-        data = scoreDownload.out.data
+        scoreDownload.out.analysis_json_and_files
 }

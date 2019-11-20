@@ -22,10 +22,10 @@ process scoreDownload {
     container "lepsalex/song-score-jq:${params.container_version}"
 
     input:
-        file analysis
+        path analysis
 
     output:
-        path 'out/*', emit: data
+        tuple path(analysis), path('out/*'), emit: analysis_json_and_files
 
 
     """
