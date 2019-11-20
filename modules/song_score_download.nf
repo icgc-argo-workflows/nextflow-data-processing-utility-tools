@@ -1,29 +1,30 @@
 #!/usr/bin/env nextflow
 nextflow.preview.dsl=2
 
+// processes resources
+params.cpus = 1
+params.mem = 1024
 
-process songScoreDownload {
-    
-    cpus params.cpus
-    memory "${params.mem} MB"
- 
-    container 'lepsalex/song-score-jq:latest'
+// required params w/ default
+params.container_version = "latest"
 
-    input:
-        val studyId
-        val analysisId
+// required params, no default
+// --song_url         song url for download process (defaults to main song_url param)
+// --score_url        score url for download process (defaults to main score_url param)
+// --api_token        song/score API token for download process (defaults to main api_token param)
 
-    output:
-        tuple file('analysis.json'), file('./out/*')
+// import modules
+include songGetAnalysis from './song_get_analysis' params(params)
+include scoreDownload from './score_download' params(params)
 
+workflow song_score_download {
+    get: studyId
+    get: analysisId
 
-    """
-    export ACCESSTOKEN=${params.api_token}
-    export METADATA_URL=${params.song_url}
-    export STORAGE_URL=${params.score_url}
+    main:
+        songGetAnalysis(studyId, analysisId)
+        scoreDownload(songGetAnalysis.out.json)
 
-    curl -X GET "${params.song_url}/studies/$studyId/analysis/$analysisId" -H  "accept: */*" > analysis.json
-    
-    cat analysis.json | jq -r '.file[].objectId' | while IFS=\$'\\\t' read -r objectId; do score-client download --object-id "\$objectId" --output-dir ./out; done
-    """
+    emit:
+        data = scoreDownload.out
 }

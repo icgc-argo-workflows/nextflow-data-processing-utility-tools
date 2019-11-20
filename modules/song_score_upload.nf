@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 nextflow.preview.dsl=2
 
+// TODO: Make this work with default containers, not uber container
 
 process songScoreUpload {
     
