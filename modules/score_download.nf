@@ -25,7 +25,7 @@ process scoreDownload {
         file analysis
 
     output:
-        tuple analysis, path('out/*')
+        path 'out/*', emit: data
 
 
     """

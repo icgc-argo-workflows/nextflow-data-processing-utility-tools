@@ -21,5 +21,6 @@ workflow {
   // Download same files
   song_score_download(params.study_id, params.analysis_id)
 
-  song_score_download.out.view()
+  song_score_download.out.analysis_json.view()
+  song_score_download.out.data.view()
 }
