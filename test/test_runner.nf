@@ -8,21 +8,18 @@ params.mem = 1024
 // test data
 test_data_dir = "data"
 
-// required params
-params.song_url = "http://some-song-url.com"
-params.score_url = "http://example-score-url.com"
-params.api_token = "this-is-only-a-test"
+// include songScoreUpload from '../modules/song_score_download' params(params)
+include song_score_download from '../modules/song_score_download' params(params)
 
-include songScoreUpload as stepOneUpload from '../modules/song_score_upload' params(params)
-include songScoreUpload as stepTwoDownload from '../modules/song_score_download' params(params)
-
-payload = file("${test_data_dir}/payload.json")
-fq_files = Channel.fromPath("${test_data_dir}/*.fq")
+// payload = file("${test_data_dir}/payload.json")
+// fq_files = Channel.fromPath("${test_data_dir}/*.fq")
 
 workflow {
   // Upload files with payload
-  stepOneUpload(payload, fq_files.collect())
+  // stepOneUpload(payload, fq_files.collect())
 
   // Download same files
-  stepTwoDownload(stepOneUpload.out)
+  song_score_download(params.study_id, params.analysis_id)
+
+  song_score_download.out.view()
 }

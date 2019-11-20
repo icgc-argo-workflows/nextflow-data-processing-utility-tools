@@ -19,13 +19,13 @@ process scoreDownload {
     cpus params.cpus
     memory "${params.mem} MB"
  
-    container "overture/song-score-jq:${params.container_version}"
+    container "lepsalex/song-score-jq:${params.container_version}"
 
     input:
         file analysis
 
     output:
-        tuple analysis, file('./out/*')
+        tuple analysis, path('out/*')
 
 
     """
@@ -33,6 +33,7 @@ process scoreDownload {
     export STORAGE_URL=${params.score_url}
     export ACCESSTOKEN=${params.api_token}
     
+    mkdir out
     cat ${analysis} | jq -r '.file[].objectId' | while IFS=\$'\\\t' read -r objectId; do score-client download --object-id "\$objectId" --output-dir ./out; done
     """
 }
