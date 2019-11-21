@@ -9,9 +9,9 @@ params.mem = 1024
 params.container_version = 'latest'
 
 // required params, no default
-// --song_url         song url for download process (defaults to main song_url param)
-// --score_url        score url for download process (defaults to main score_url param)
-// --api_token        song/score API token for download process (defaults to main api_token param)
+// --song_url         song url for download process
+// --score_url        score url for download process
+// --api_token        song/score API token for download process
 
 // TODO: Replace with score container once it can download files via analysisId
 process scoreDownload {
