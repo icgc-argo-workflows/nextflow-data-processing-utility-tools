@@ -20,34 +20,40 @@ process a2PayloadGen {
     output:
         path 'payload.json'
 
-    echo true
-
     script:
     list_of_files = upload.collect { "\'${it.getName()}\'" }.join(', ')
     """
     #!/usr/bin/python
 
+    import os
     import json
+    import hashlib
 
-    def generate_file_meta(file):
+    def generate_file_meta(file_path):
         return {
-            'fileName': 'test+val',
-            'fileSize': 'test+val',
-            'fileMd5sum': 'test+val',
-            'fileType': 'test+val',
-            'fileAccess': 'test+val'
+            'fileName': os.path.basename(file_path),
+            'fileSize': os.path.getsize(file_path),
+            'fileMd5sum': generateMD5Hash(file_path),
+            'fileType': 'BAM' if os.path.splitext(file_path)[1] == '.cram' else 'BAI',
+            'fileAccess': 'public'
         }
+
+    def generateMD5Hash(file_path):
+        md5_hash = hashlib.md5()
+        with open(file_path, 'rb') as f:
+            # Read and update hash in chunks of 4K
+            for byte_block in iter(lambda: f.read(4096), b""):
+                md5_hash.update(byte_block)
+            return md5_hash.hexdigest()
 
     payload_json = json.load(open('${template}'))
     payload_json['file'] = []
 
-    for upload in [${list_of_files}]:
-        with open(upload, 'r'):
-            payload_json['file'].append(generate_file_meta(upload))
-
-    print(payload_json)
+    for upload_file_path in [${list_of_files}]:
+        payload_json['file'].append(generate_file_meta(upload_file_path))
 
     with open('payload.json', 'w') as payload_file:
         json.dump(payload_json, payload_file)
+    
     """
 }
