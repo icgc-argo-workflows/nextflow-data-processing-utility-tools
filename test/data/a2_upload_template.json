@@ -1,25 +1,6 @@
 {
-    "study": "TEST-PRO",
     "analysisType": {
       "name": "Nextflow-A2"
-    },
-    "sample": [
-      {
-        "sampleSubmitterId": "HCC1143_CRAM",
-        "sampleType": "Total RNA",
-        "specimen": {
-          "specimenSubmitterId": "TEST_EXP",
-          "specimenClass": "Tumour",
-          "specimenType": "Primary tumour - other"
-        },
-        "donor": {
-          "donorSubmitterId": "internal_donor_123456789-00",
-          "donorGender": "female"
-        }
-      }
-    ],
-    "experiment": {
-      "libraryStrategy": "WGS"
     }
   }
   
