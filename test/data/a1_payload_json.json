@@ -1,94 +1,95 @@
 {
   "study": "TEST-PRO",
-  "analysisType": {
-    "name": "Nextflow-A1"
-  },
   "sample": [
     {
+      "info": {},
+      "sampleId": "SAbc064f25adab65a4c75a539e5e2b8d48",
+      "specimenId": "SPea740f45bacdf68583eeb9183e8bb57a",
       "sampleSubmitterId": "HCC1143_BAM_INPUT",
-      "sampleType": "Total RNA",
+      "sampleType": "DNA",
       "specimen": {
-        "specimenSubmitterId": "TEST_EXP",
+        "info": {},
+        "specimenId": "SPea740f45bacdf68583eeb9183e8bb57a",
+        "donorId": "DO1d5c9010f8ddcc4b7be855ddaa9cdd3c",
+        "specimenSubmitterId": "HCC1143_BAM_INPUT",
         "specimenClass": "Tumour",
         "specimenType": "Primary tumour - other"
       },
       "donor": {
-        "donorSubmitterId": "internal_donor_123456789-00",
-        "donorGender": "female"
+        "donorId": "DO1d5c9010f8ddcc4b7be855ddaa9cdd3c",
+        "donorSubmitterId": "HCC1143",
+        "studyId": "TEST-PRO",
+        "donorGender": "female",
+        "info": {}
       }
     }
   ],
   "file": [
     {
-      "fileName": "test_rg_3.bam",
-      "fileSize": 14899,
-      "fileMd5sum": "247581f6d2324ee3860158334fe517c8",
+      "info": {},
+      "studyId": "TEST-PRO",
+      "analysisId": "1a1fbac3-00bf-4606-9fba-c300bf46068d",
+      "fileName": "test_rg_3.v2.bam",
+      "fileSize": 14911,
       "fileType": "BAM",
-      "fileAccess": "open"
+      "fileMd5sum": "178f97f7b1ca8bfc28fd5586bdd56799",
+      "fileAccess": "controlled"
     }
   ],
-  "experiment": {
-    "libraryStrategy": "WGS"
+  "analysisType": {
+    "name": "sequencing_experiment"
   },
-  "type": "sequencing_experiment",
-  "input_seq_format": "BAM",
-  "program": "TEST-PRO",
-  "submitter_id": "TEST_EXP",
-  "sample_submitter_id": "HCC1143_BAM_INPUT",
-  "sequencing_center": "EXT",
-  "platform": "Illumina",
-  "platform_model": "HiSeq 2000",
-  "library_strategy": "WGS",
-  "sequencing_date": "2014-12-12",
-  "read_group_count": 3,
-  "files": [
+  "workflow": {
+    "name": "sequencing-data-submission",
+    "run_id": "dreamy_visvesvaraya",
+    "version": "0.4.0",
+    "short_name": "seq-submission"
+  },
+  "experiment": {
+    "platform": "ILLUMINA",
+    "platform_model": "HiSeq 2000",
+    "sequencing_date": "2014-12-12",
+    "library_strategy": "WGS",
+    "sequencing_center": "EXT"
+  },
+  "read_groups": [
     {
-      "read_groups": [
-        {
-          "type": "read_group",
-          "submitter_id": "C0HVY.2",
-          "platform_unit": "74_8",
-          "is_paired_end": true,
-          "read_length_r1": 150,
-          "read_length_r2": 150,
-          "insert_size": 298,
-          "sample_barcode": "",
-          "library_name": "Pond-147580",
-          "experiment_submitter_id": "TEST_EXP"
-        },
-        {
-          "type": "read_group",
-          "submitter_id": "D0RE2.1",
-          "platform_unit": "74_8",
-          "is_paired_end": true,
-          "read_length_r1": 150,
-          "read_length_r2": 150,
-          "insert_size": 298,
-          "sample_barcode": "",
-          "library_name": "Pond-147580",
-          "experiment_submitter_id": "TEST_EXP"
-        },
-        {
-          "type": "read_group",
-          "submitter_id": "D0RH0.2",
-          "platform_unit": "74_8",
-          "is_paired_end": true,
-          "read_length_r1": 150,
-          "read_length_r2": 150,
-          "insert_size": 298,
-          "sample_barcode": "",
-          "library_name": "Pond-147580",
-          "experiment_submitter_id": "TEST_EXP"
-        }
-      ],
-      "name": "test_rg_3.bam",
-      "size": 14899,
-      "read_group_submitter_id": ["D0RH0.2", "C0HVY.2", "D0RE2.1"],
-      "checksum": "247581f6d2324ee3860158334fe517c8",
-      "checksum_type": "md5",
-      "local_path": "song://collaboratory/EGAZ00001018588/7aba9867-ffba-5e57-96d0-300c80839504",
-      "format": "BAM",
-      "type": "sequencing_file"
+      "file_r1": "test_rg_3.v2.bam",
+      "file_r2": "test_rg_3.v2.bam",
+      "insert_size": 298,
+      "library_name": "Pond-147580",
+      "is_paired_end": true,
+      "platform_unit": "74_8a",
+      "read_length_r1": 150,
+      "read_length_r2": 150,
+      "sample_barcode": null,
+      "submitter_read_group_id": "C0HVY.2"
+    },
+    {
+      "file_r1": "test_rg_3.v2.bam",
+      "file_r2": "test_rg_3.v2.bam",
+      "insert_size": 298,
+      "library_name": "Pond-147580",
+      "is_paired_end": true,
+      "platform_unit": "74_8b",
+      "read_length_r1": 150,
+      "read_length_r2": 150,
+      "sample_barcode": null,
+      "submitter_read_group_id": "D0RE2.1"
+    },
+    {
+      "file_r1": "test_rg_3.v2.bam",
+      "file_r2": "test_rg_3.v2.bam",
+      "insert_size": 298,
+      "library_name": "Pond-147580",
+      "is_paired_end": true,
+      "platform_unit": "74_8c",
+      "read_length_r1": 150,
+      "read_length_r2": 150,
+      "sample_barcode": null,
+      "submitter_read_group_id": "D0RH0.2"
     }
-  ]
+  ],
+  "read_group_count": 3,
+  "submitter_sequencing_experiment_id": "TEST_EXP"
 }
