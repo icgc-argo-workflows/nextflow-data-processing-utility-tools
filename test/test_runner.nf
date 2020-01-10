@@ -14,7 +14,7 @@ include songScoreDownload from '../workflow/song_score_download' params(params)
 include sequencingAlignmentPayloadGen from '../process/sequencing_alignment_payload_gen'
 
 sequencing_experiment_payload = file("${test_data_dir}/sequencing_experiment_payload.json")
-upload = Channel.fromPath("${test_data_dir}/*.bam").collect()
+upload = Channel.fromPath("${test_data_dir}/sequencing_read_upload/*").collect()
 
 sequencing_alignment = Channel.fromPath("${test_data_dir}/sequencing_alignment_upload/*").collect()
 
