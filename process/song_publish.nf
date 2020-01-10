@@ -6,7 +6,7 @@ params.cpus = 1
 params.mem = 1024
 
 // required params w/ default
-params.container_version = '15b6559f'
+params.container_version = 'latest'
 
 // required params, no default
 // --song_url         song url for download process (defaults to main song_url param)
@@ -33,7 +33,6 @@ process songPublish {
     export CLIENT_ACCESS_TOKEN=${params.api_token}
     export CLIENT_STUDY_ID=${study_id}
 
-    cd /song-client/bin
-    ./sing publish -a  ${analysis_id}
+    sing publish -a  ${analysis_id}
     """
 }
