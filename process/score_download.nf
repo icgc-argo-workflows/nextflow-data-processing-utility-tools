@@ -37,6 +37,6 @@ process scoreDownload {
     export ACCESSTOKEN=${params.api_token}
     
     mkdir out
-    cat ${analysis} | jq -r '.file[].objectId' | while IFS=\$'\\\t' read -r objectId; do score-client download --object-id "\$objectId" --output-dir ./out; done
+    cat ${analysis} | jq -r '.files[].objectId' | while IFS=\$'\\\t' read -r objectId; do score-client download --object-id "\$objectId" --output-dir ./out; done
     """
 }
