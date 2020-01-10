@@ -19,6 +19,7 @@ process scoreDownload {
     cpus params.cpus
     memory "${params.mem} MB"
  
+    // TODO: Update to official container  
     container "lepsalex/song-score-jq:${params.container_version}"
 
     tag "${analysis.baseName}"
