@@ -32,7 +32,7 @@ process scoreDownload {
 
     output:
         path analysis, emit: analysis_json
-        path 'out/*, emit: files
+        path 'out/*', emit: files
 
 
     """
