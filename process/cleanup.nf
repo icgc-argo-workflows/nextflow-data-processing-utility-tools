@@ -15,7 +15,7 @@ process cleanup {
 
     input:
         path files_to_delete  // more accurately, other non-hidden files in the same folder will be deleted as well
-        val virtual_dep_flag
+        val virtual_dep_flag  // for specifying steps do not produce output files but produce values, set those values here
 
     script:
         """
