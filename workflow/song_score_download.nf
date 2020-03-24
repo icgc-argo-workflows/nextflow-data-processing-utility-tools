@@ -43,8 +43,8 @@ workflow songScoreDownload {
     take: analysis_id
 
     main:
-        songGetAnalysis(study_id, analysis_id)
-        scoreDownload(songGetAnalysis.out.json, study_id, analysis_id)
+        songGetAnalysis(study_id, analysis_id, song_params.api_token)
+        scoreDownload(songGetAnalysis.out.json, study_id, analysis_id, score_params.api_token)
 
     emit:
         analysis_json = songGetAnalysis.out.json

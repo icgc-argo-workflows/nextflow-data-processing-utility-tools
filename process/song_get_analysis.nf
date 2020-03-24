@@ -25,6 +25,7 @@ process songGetAnalysis {
     input:
         val study_id
         val analysis_id
+        env CLIENT_ACCESS_TOKEN
 
     output:
         path '*.analysis.json', emit: json
@@ -32,7 +33,6 @@ process songGetAnalysis {
 
     """
     export CLIENT_SERVER_URL=${params.song_url}
-    export CLIENT_ACCESS_TOKEN=${params.api_token}
     export CLIENT_STUDY_ID=${study_id}
 
     curl -X GET "${params.song_url}/studies/$study_id/analysis/$analysis_id" -H  "accept: */*" > ${analysis_id}.analysis.json
