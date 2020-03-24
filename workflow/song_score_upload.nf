@@ -51,25 +51,25 @@ include songPublish from '../process/song_publish' params(song_params)
 include extractAnalysisId from '../process/extract_analysis_id' params(extract_params)
 
 workflow songScoreUpload {
-    get: study_id
-    get: payload
-    get: upload
+    take: study_id
+    take: payload
+    take: upload
 
     main:
         // Create new analysis
-        songSubmit(study_id, payload)
+        songSubmit(study_id, payload, song_params.api_token)
 
         // Extract and save analysis_id
         extractAnalysisId(songSubmit.out)
 
         // Generate file manifest for upload
-        songManifest(study_id, extractAnalysisId.out, upload)
+        songManifest(study_id, extractAnalysisId.out, upload, song_params.api_token)
 
         // Upload to SCORE
-        scoreUpload(extractAnalysisId.out, songManifest.out, upload)
+        scoreUpload(extractAnalysisId.out, songManifest.out, upload, score_params.api_token)
 
         // Publish the analysis
-        songPublish(study_id, scoreUpload.out.ready_to_publish)
+        songPublish(study_id, scoreUpload.out.ready_to_publish, song_params.api_token)
 
     emit:
         analysis_id = songPublish.out.analysis_id

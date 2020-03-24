@@ -39,12 +39,12 @@ include songGetAnalysis from '../process/song_get_analysis' params(song_params)
 include scoreDownload from '../process/score_download' params(score_params)
 
 workflow songScoreDownload {
-    get: study_id
-    get: analysis_id
+    take: study_id
+    take: analysis_id
 
     main:
-        songGetAnalysis(study_id, analysis_id)
-        scoreDownload(songGetAnalysis.out.json, study_id, analysis_id)
+        songGetAnalysis(study_id, analysis_id, song_params.api_token)
+        scoreDownload(songGetAnalysis.out.json, study_id, analysis_id, score_params.api_token)
 
     emit:
         analysis_json = songGetAnalysis.out.json

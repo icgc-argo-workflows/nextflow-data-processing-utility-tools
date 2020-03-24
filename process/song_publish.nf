@@ -24,13 +24,13 @@ process songPublish {
     input:
         val study_id
         val analysis_id
+        env CLIENT_ACCESS_TOKEN
 
     output:
         val analysis_id, emit: analysis_id
 
     """
     export CLIENT_SERVER_URL=${params.song_url}
-    export CLIENT_ACCESS_TOKEN=${params.api_token}
     export CLIENT_STUDY_ID=${study_id}
 
     sing publish -a  ${analysis_id}

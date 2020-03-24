@@ -25,13 +25,13 @@ process songSubmit {
     input:
         val study_id
         path payload
+        env CLIENT_ACCESS_TOKEN
     
     output:
         path 'download_payload.json'
 
     """
     export CLIENT_SERVER_URL=${params.song_url}
-    export CLIENT_ACCESS_TOKEN=${params.api_token}
     export CLIENT_STUDY_ID=${study_id}
 
     sing submit -f ${payload} > download_payload.json
