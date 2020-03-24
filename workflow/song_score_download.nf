@@ -39,8 +39,8 @@ include songGetAnalysis from '../process/song_get_analysis' params(song_params)
 include scoreDownload from '../process/score_download' params(score_params)
 
 workflow songScoreDownload {
-    get: study_id
-    get: analysis_id
+    take: study_id
+    take: analysis_id
 
     main:
         songGetAnalysis(study_id, analysis_id)

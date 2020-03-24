@@ -51,9 +51,9 @@ include songPublish from '../process/song_publish' params(song_params)
 include extractAnalysisId from '../process/extract_analysis_id' params(extract_params)
 
 workflow songScoreUpload {
-    get: study_id
-    get: payload
-    get: upload
+    take: study_id
+    take: payload
+    take: upload
 
     main:
         // Create new analysis
