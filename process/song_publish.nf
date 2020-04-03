@@ -33,6 +33,6 @@ process songPublish {
     export CLIENT_SERVER_URL=${params.song_url}
     export CLIENT_STUDY_ID=${study_id}
 
-    sing publish -a  ${analysis_id.trim()}
+    sing publish -a  ${analysis_id}
     """
 }

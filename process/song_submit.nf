@@ -34,6 +34,6 @@ process songSubmit {
     export CLIENT_SERVER_URL=${params.song_url}
     export CLIENT_STUDY_ID=${study_id}
 
-    sing submit -f ${payload} | grep analysisId | sed 's/.*\\s\\+\\|"\\|,//g'
+    sing submit -f ${payload} | grep analysisId | sed 's/.*\\s\\+\\|"\\|,//g' | tr -d '\\n'
     """
 }
