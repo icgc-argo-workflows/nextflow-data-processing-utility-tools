@@ -12,7 +12,6 @@ params.container_version = '4.1.1'
 // --song_url         song url for download process (defaults to main song_url param)
 // --api_token        song/score API token for download process (defaults to main api_token param)
 
-// TODO: Replace curl with SONG command once it's fixed!
 process songGetAnalysis {
     
     cpus params.cpus
@@ -35,6 +34,6 @@ process songGetAnalysis {
     export CLIENT_SERVER_URL=${params.song_url}
     export CLIENT_STUDY_ID=${study_id}
 
-    curl -X GET "${params.song_url}/studies/$study_id/analysis/$analysis_id" -H  "accept: */*" > ${analysis_id}.analysis.json
+    sing search -a ${analysis_id} > ${analysis_id}.analysis.json
     """
 }
