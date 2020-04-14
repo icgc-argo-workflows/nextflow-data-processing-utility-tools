@@ -9,7 +9,7 @@ params.score_mem = 20
 params.score_transport_mem = 2
 
 // required params w/ default
-params.song_container_version = '4.1.1'
+params.song_container_version = '4.2.0'
 params.score_container_version = '3.1.1'
 
 // required params, no default
