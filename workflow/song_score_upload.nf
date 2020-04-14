@@ -11,7 +11,7 @@ params.extract_cpus = 1
 params.extract_mem = 1
 
 // required params w/ default
-params.song_container_version = '4.1.1'
+params.song_container_version = '4.2.0'
 params.score_container_version = '3.1.1'
 params.extract_container_version = 'latest'
 
