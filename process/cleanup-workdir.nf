@@ -4,14 +4,14 @@ nextflow.preview.dsl=2
 params.cpus = 1
 params.mem = 1
 params.files_to_delete = 'NO_FILE'
-params.container_version = '18.04'
+params.container_version = ''
 
 
 process cleanupWorkdir {
     cpus params.cpus
     memory "${params.mem} GB"
  
-    container "ubuntu:${params.container_version}"
+    container "ubuntu:${params.container_version ?: '18.04'}"
 
     input:
         path files_to_delete  // more accurately, other non-hidden files in the same folder will be deleted as well
@@ -19,6 +19,8 @@ process cleanupWorkdir {
 
     script:
         """
+        set -euxo pipefail
+
         IFS=" "
         read -a files <<< "${files_to_delete}"
         for f in "\${files[@]}"
