@@ -6,7 +6,7 @@ params.cpus = 1
 params.mem = 1
 
 // required params w/ default
-params.container_version = '4.2.0'
+params.container_version = '7b347887'
 
 // required params, no default
 // --song_url         song url for download process (defaults to main song_url param)
@@ -34,6 +34,7 @@ process songSubmit {
     export CLIENT_SERVER_URL=${params.song_url}
     export CLIENT_STUDY_ID=${study_id}
 
-    sing submit -f ${payload} | grep analysisId | sed 's/.*\\s\\+\\|"\\|,//g' | tr -d '\\n'
+    set -euxo pipefail
+    sing submit -f ${payload} | jq -er .analysisId
     """
 }
