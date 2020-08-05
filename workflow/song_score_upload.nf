@@ -25,7 +25,6 @@ song_params = [
     'cpus': params.song_cpus,
     'mem': params.song_mem,
     'container_version': params.song_container_version,
-    'api_token': params.song_api_token ?: params.api_token
 ]
 
 score_params = [
@@ -34,7 +33,6 @@ score_params = [
     'mem': params.score_mem,
     'transport_mem': params.score_transport_mem,
     'container_version': params.score_container_version,
-    'api_token': params.score_api_token ?: params.api_token
 ]
 
 extract_params = [
@@ -56,16 +54,16 @@ workflow songScoreUpload {
 
     main:
         // Create new analysis
-        songSubmit(study_id, payload, song_params.api_token)
+        songSubmit(study_id, payload)
 
         // Generate file manifest for upload
-        songManifest(study_id, songSubmit.out, upload, song_params.api_token)
+        songManifest(study_id, songSubmit.out, upload)
 
         // Upload to SCORE
-        scoreUpload(songSubmit.out, songManifest.out, upload, score_params.api_token)
+        scoreUpload(songSubmit.out, songManifest.out, upload)
 
         // Publish the analysis
-        songPublish(study_id, scoreUpload.out.ready_to_publish, song_params.api_token)
+        songPublish(study_id, scoreUpload.out.ready_to_publish)
 
     emit:
         analysis_id = songPublish.out.analysis_id

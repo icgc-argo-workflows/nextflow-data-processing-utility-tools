@@ -22,7 +22,6 @@ song_params = [
     'cpus': params.song_cpus,
     'mem': params.song_mem,
     'container_version': params.song_container_version,
-    'api_token': params.song_api_token ?: params.api_token
 ]
 
 score_params = [
@@ -31,7 +30,6 @@ score_params = [
     'mem': params.score_mem,
     'transport_mem': params.score_transport_mem,
     'container_version': params.score_container_version,
-    'api_token': params.score_api_token ?: params.api_token
 ]
 
 // import modules
@@ -43,8 +41,8 @@ workflow songScoreDownload {
     take: analysis_id
 
     main:
-        songGetAnalysis(study_id, analysis_id, song_params.api_token)
-        scoreDownload(songGetAnalysis.out.json, study_id, analysis_id, score_params.api_token)
+        songGetAnalysis(study_id, analysis_id)
+        scoreDownload(songGetAnalysis.out.json, study_id, analysis_id)
 
     emit:
         analysis_json = songGetAnalysis.out.json

@@ -16,6 +16,7 @@ params.transport_mem = 2 // Transport memory is in number of GBs
 
 // TODO: Replace with score container once it can download files via analysis_id
 process scoreDownload {
+    pod secret: workflow.runName + '-secret', mountPath: '/tmp/' + workflow.runName
     
     cpus params.cpus
     memory "${params.mem} GB"
@@ -29,7 +30,6 @@ process scoreDownload {
         path analysis
         val study_id
         val analysis_id
-        env ACCESSTOKEN
 
     output:
         path analysis, emit: analysis_json
@@ -41,6 +41,7 @@ process scoreDownload {
     export STORAGE_URL=${params.score_url}
     export TRANSPORT_PARALLEL=${params.cpus}
     export TRANSPORT_MEMORY=${params.transport_mem}
+    export ACCESSTOKEN=`base64 -d /tmp/${workflow.runName}/secret`
     
     score-client download --analysis-id ${analysis_id} --study-id ${study_id} --output-dir ./out 
     """

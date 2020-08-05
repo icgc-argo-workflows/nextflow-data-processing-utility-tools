@@ -15,6 +15,7 @@ params.transport_mem = 2 // Transport memory is in number of GBs
 // --api_token        song/score API token for upload process
 
 process scoreUpload {
+    pod secret: workflow.runName + '-secret', mountPath: '/tmp/' + workflow.runName
     
     cpus params.cpus
     memory "${params.mem} GB"
@@ -27,7 +28,6 @@ process scoreUpload {
         val analysis_id
         path manifest
         path upload
-        env ACCESSTOKEN
 
     output:
         val analysis_id, emit: ready_to_publish
@@ -37,6 +37,7 @@ process scoreUpload {
     export STORAGE_URL=${params.score_url}
     export TRANSPORT_PARALLEL=${params.cpus}
     export TRANSPORT_MEMORY=${params.transport_mem}
+    export ACCESSTOKEN=`base64 -d /tmp/${workflow.runName}/secret`
     
     score-client upload --manifest ${manifest}
     """

@@ -13,6 +13,7 @@ params.container_version = '4.2.1'
 // --api_token        song/score API token for download process (defaults to main api_token param)
 
 process songGetAnalysis {
+    pod secret: workflow.runName + '-secret', mountPath: '/tmp/' + workflow.runName
     
     cpus params.cpus
     memory "${params.mem} GB"
@@ -24,7 +25,6 @@ process songGetAnalysis {
     input:
         val study_id
         val analysis_id
-        env CLIENT_ACCESS_TOKEN
 
     output:
         path '*.analysis.json', emit: json
@@ -33,6 +33,7 @@ process songGetAnalysis {
     """
     export CLIENT_SERVER_URL=${params.song_url}
     export CLIENT_STUDY_ID=${study_id}
+    export CLIENT_ACCESS_TOKEN=`base64 -d /tmp/${workflow.runName}/secret`
 
     sing search -a ${analysis_id} > ${analysis_id}.analysis.json
     """
