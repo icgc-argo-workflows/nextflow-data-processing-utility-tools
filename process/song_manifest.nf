@@ -13,6 +13,7 @@ params.container_version = '4.2.1'
 // --api_token        song/score API token for download process (defaults to main api_token param)
 
 process songManifest {
+    pod secret: workflow.runName + '-secret', mountPath: '/tmp/' + workflow.runName
     
     cpus params.cpus
     memory "${params.mem} GB"
@@ -25,7 +26,6 @@ process songManifest {
         val study_id
         val analysis_id
         path upload
-        env CLIENT_ACCESS_TOKEN
     
     output:
         path 'out/manifest.txt'
@@ -33,6 +33,7 @@ process songManifest {
     """
     export CLIENT_SERVER_URL=${params.song_url}
     export CLIENT_STUDY_ID=${study_id}
+    export CLIENT_ACCESS_TOKEN=`base64 -d /tmp/${workflow.runName}/secret`
 
     sing manifest -a ${analysis_id} -d . -f ./out/manifest.txt
     """
