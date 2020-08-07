@@ -37,7 +37,7 @@ process scoreUpload {
     export STORAGE_URL=${params.score_url}
     export TRANSPORT_PARALLEL=${params.cpus}
     export TRANSPORT_MEMORY=${params.transport_mem}
-    export ACCESSTOKEN=`base64 -d /tmp/${workflow.runName}/secret`
+    export ACCESSTOKEN=`cat /tmp/${workflow.runName}/secret`
     
     score-client upload --manifest ${manifest}
     """
