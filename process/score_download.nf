@@ -41,7 +41,7 @@ process scoreDownload {
     export STORAGE_URL=${params.score_url}
     export TRANSPORT_PARALLEL=${params.cpus}
     export TRANSPORT_MEMORY=${params.transport_mem}
-    export ACCESSTOKEN=`base64 -d /tmp/${workflow.runName}/secret`
+    export ACCESSTOKEN=`cat /tmp/${workflow.runName}/secret`
     
     score-client download --analysis-id ${analysis_id} --study-id ${study_id} --output-dir ./out 
     """
