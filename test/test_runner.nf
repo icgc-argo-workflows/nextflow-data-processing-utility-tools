@@ -1,5 +1,5 @@
 #!/usr/bin/env nextflow
-nextflow.preview.dsl=2
+nextflow.enable.dsl=2
 
 // processes resources
 params.cpus = 1
@@ -8,9 +8,9 @@ params.mem = 1
 // test data
 test_data_dir = "data"
 
-include songScoreDownload from '../workflow/song_score_download' params(params)
-include songScoreUpload as sequencingAlignmentUpload from '../workflow/song_score_upload' params(params)
-include sequencingAlignmentPayloadGen from '../process/sequencing_alignment_payload_gen'
+include { songScoreDownload } from '../workflow/song_score_download' params(params)
+include { songScoreUpload as sequencingAlignmentUpload } from '../workflow/song_score_upload' params(params)
+include { sequencingAlignmentPayloadGen } from '../process/sequencing_alignment_payload_gen'
 
 sequencing_alignment = Channel.fromPath("${test_data_dir}/sequencing_alignment_upload/*").collect()
 
