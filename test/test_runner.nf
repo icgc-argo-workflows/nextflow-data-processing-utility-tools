@@ -14,7 +14,21 @@ include sequencingAlignmentPayloadGen from '../process/sequencing_alignment_payl
 
 sequencing_alignment = Channel.fromPath("${test_data_dir}/sequencing_alignment_upload/*").collect()
 
+process mountSecret {
+  input:
+    val apiKey
+    
+  script:
+    """
+      mkdir /tmp/$workflow.runName
+      echo $apiKey > /tmp/$workflow.runName/secret
+    """
+}
+
 workflow {
+  // Mount secret so processes have access to it
+  mountSecret(params.apiKey)
+
   // Download sequencing_experiment files
   songScoreDownload(params.study_id, params.analysis_id)
 

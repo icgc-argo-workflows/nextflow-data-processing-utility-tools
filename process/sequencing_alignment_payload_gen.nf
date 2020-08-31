@@ -6,7 +6,7 @@ params.cpus = 1
 params.mem = 1
 
 // required params w/ default
-params.container_version = '0.1.6.1'
+params.container_version = '0.3.0.0'
 
 process sequencingAlignmentPayloadGen {
 
