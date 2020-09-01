@@ -1,12 +1,12 @@
 #!/usr/bin/env nextflow
-nextflow.preview.dsl=2
+nextflow.enable.dsl=2
 
 // processes resources
 params.cpus = 1
 params.mem = 1
 
 // required params w/ default
-params.container_version = '0.1.6.1'
+params.container_version = '0.3.0.0'
 
 process sequencingAlignmentPayloadGen {
 

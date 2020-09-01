@@ -1,5 +1,5 @@
 #!/usr/bin/env nextflow
-nextflow.preview.dsl=2
+nextflow.enable.dsl=2
 
 // processes resources
 params.song_cpus = 1
@@ -42,10 +42,10 @@ extract_params = [
 ]
 
 // import modules
-include songSubmit from '../process/song_submit' params(song_params)
-include songManifest from '../process/song_manifest' params(song_params)
-include scoreUpload from '../process/score_upload' params(score_params)
-include songPublish from '../process/song_publish' params(song_params)
+include { songSubmit } from '../process/song_submit' params(song_params)
+include { songManifest } from '../process/song_manifest' params(song_params)
+include { scoreUpload } from '../process/score_upload' params(score_params)
+include { songPublish } from '../process/song_publish' params(song_params)
 
 workflow songScoreUpload {
     take: study_id
