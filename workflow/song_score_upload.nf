@@ -18,6 +18,8 @@ params.extract_container_version = 'latest'
 // required params, no default
 // --song_url         song url for download process (defaults to main song_url param)
 // --score_url        score url for download process (defaults to main score_url param)
+
+// optional if secret mounted from pod else required
 // --api_token        song/score API token for download process (defaults to main api_token param)
 
 song_params = [
