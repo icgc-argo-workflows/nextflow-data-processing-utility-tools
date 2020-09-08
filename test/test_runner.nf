@@ -14,20 +14,23 @@ include { sequencingAlignmentPayloadGen } from '../process/sequencing_alignment_
 
 sequencing_alignment = Channel.fromPath("${test_data_dir}/sequencing_alignment_upload/*").collect()
 
+// process to mount secrets for this test only
+// can also test api_key param override by providing
+// both api_token and pod_secret in params
 process mountSecret {
   input:
-    val apiKey
+    val pod_secret
     
   script:
     """
       mkdir /tmp/$workflow.runName
-      echo $apiKey > /tmp/$workflow.runName/secret
+      echo $pod_secret > /tmp/$workflow.runName/secret
     """
 }
 
 workflow {
   // Mount secret so processes have access to it
-  mountSecret(params.apiKey)
+  mountSecret(params.pod_secret)
 
   // Download sequencing_experiment files
   songScoreDownload(params.study_id, params.analysis_id)
