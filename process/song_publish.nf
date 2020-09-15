@@ -16,7 +16,7 @@ params.api_token = "" // song/score API token for download process
 // --score_url        score url for download process
 
 process songPublish {
-    pod secret: workflow.runName + "-secret", mountPath: "/tmp/" + workflow.runName
+    pod secret: params.rpdc_secret_name, mountPath: "/tmp/rpdc_secret"
     
     cpus params.cpus
     memory "${params.mem} GB"
@@ -33,7 +33,7 @@ process songPublish {
         val analysis_id, emit: analysis_id
 
     script:
-        accessToken = params.api_token ? params.api_token : "`cat /tmp/${workflow.runName}/secret`"
+        accessToken = params.api_token ? params.api_token : "`cat /tmp/rpdc_secret/secret`"
         """
         export CLIENT_SERVER_URL=${params.song_url}
         export CLIENT_STUDY_ID=${study_id}
