@@ -17,7 +17,7 @@ params.api_token = "" // song/score API token for download process
 // --score_url        score url for download process
 
 process scoreUpload {
-    pod secret: params.rpdc_secret_name, mountPath: "/tmp/rpdc_secret"
+    pod = [secret: params.rdpc_secret_name, mountPath: "/tmp/rpdc_secret"]
     
     cpus params.cpus
     memory "${params.mem} GB"
