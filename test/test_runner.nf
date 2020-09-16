@@ -23,8 +23,8 @@ process mountSecret {
     
   script:
     """
-      mkdir /tmp/$workflow.runName
-      echo $pod_secret > /tmp/$workflow.runName/secret
+      mkdir -p /tmp/rdpc_secret
+      echo $pod_secret > /tmp/rdpc_secret/secret
     """
 }
 
