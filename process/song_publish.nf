@@ -16,7 +16,7 @@ params.api_token = "" // song/score API token for download process
 // --score_url        score url for download process
 
 process songPublish {
-    pod = [secret: params.rdpc_secret_name, mountPath: "/tmp/rdpc_secret"]
+    pod = [secret: workflow.runName + "-secret", mountPath: "/tmp/rdpc_secret"]
     
     cpus params.cpus
     memory "${params.mem} GB"
