@@ -5,7 +5,7 @@ include { songScoreDownload } from './workflow/song_score_download' params(param
 include { songScoreUpload } from './workflow/song_score_upload' params(params)
 
 process analysisToPayload() {
-    container "ubuntu:18.04"
+    container "cfmanteiga/alpine-bash-curl-jq"
 
     input:
         path analysis_json
@@ -13,7 +13,20 @@ process analysisToPayload() {
         path 'payload.json', emit: payload
     script:
         """
-            sed '/\"analysisId\"/ d  ;  /\"analysisState\"/ d' $analysis_json > payload.json
+        cat $analysis_json
+        cat $analysis_json | jq 'del(.analysisId, .analysisState) + {"workflow": {
+            "workflow_name": "nextflow-data-processing-utility-tools",
+            "workflow_version": "$workflow.revision",
+            "genome_build": "GRCh38_hla_decoy_ebv",
+            "run_id": "$workflow.runName",
+            "session_id": "$workflow.sessionId",
+            "inputs": [
+                {
+                    "analysis_type": .analysisType,
+                    "input_analysis_id": .analysisId
+                }
+            ]
+        }}' > payload.json
         """
 }
 
