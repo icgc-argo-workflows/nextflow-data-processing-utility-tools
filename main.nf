@@ -22,7 +22,7 @@ process analysisToPayload() {
             "session_id": "$workflow.sessionId",
             "inputs": [
                 {
-                    "analysis_type": .analysisType.name,
+                    "analysis_type": "sequencing_experiment",
                     "input_analysis_id": .analysisId
                 }
             ]
