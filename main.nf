@@ -14,7 +14,7 @@ process analysisToPayload() {
     script:
         """
         cat $analysis_json
-        cat $analysis_json | jq 'del(.analysisId, .analysisState) + {"workflow": {
+        cat $analysis_json | jq 'del(.analysisId, .analysisState, .analysisType.version) + {"workflow": {
             "workflow_name": "nextflow-data-processing-utility-tools",
             "workflow_version": "$workflow.revision",
             "genome_build": "GRCh38_hla_decoy_ebv",
