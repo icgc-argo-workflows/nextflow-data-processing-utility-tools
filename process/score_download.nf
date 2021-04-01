@@ -5,6 +5,8 @@ nextflow.enable.dsl=2
 params.cpus = 8
 params.mem = 20
 
+params.publish_dir = ""
+
 // required params w/ default
 params.container_version = "5.0.0"
 params.transport_mem = 2 // Transport memory is in number of GBs
@@ -24,6 +26,7 @@ process scoreDownload {
     memory "${params.mem} GB"
  
     container "overture/score:${params.container_version}"
+    publishDir "${params.publish_dir}/${task.process.replaceAll(':', '_')}", mode: "copy", enabled: params.publish_dir
 
     label "scoreDownload"
     tag "${analysis_id}"

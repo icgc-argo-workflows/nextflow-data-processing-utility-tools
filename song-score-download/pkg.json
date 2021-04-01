@@ -14,9 +14,7 @@
         "type": "git",
         "url": "https://github.com/icgc-argo/nextflow-data-processing-utility-tools.git"
     },
-    "dependencies": [
-        "github.com/icgc-argo/data-processing-utility-tools/cleanup-workdir@1.0.0"
-    ],
+    "dependencies": [],
     "devDependencies": [],
     "contributors": [
         {

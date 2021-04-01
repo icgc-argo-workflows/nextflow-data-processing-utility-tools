@@ -5,6 +5,8 @@ nextflow.enable.dsl=2
 params.cpus = 1
 params.mem = 1
 
+params.publish_dir = ""
+
 // required params w/ default
 params.container_version = "4.2.1"
 
@@ -22,6 +24,7 @@ process songGetAnalysis {
     memory "${params.mem} GB"
  
     container "overture/song-client:${params.container_version}"
+    publishDir "${params.publish_dir}/${task.process.replaceAll(':', '_')}", mode: "copy", enabled: params.publish_dir
 
     tag "${analysis_id}"
 

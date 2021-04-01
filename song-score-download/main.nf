@@ -25,32 +25,67 @@ version = '2.6.0'  // package version
 // universal params go here, change default value as needed
 params.container = ""
 params.container_registry = ""
-params.container_version = ""
-params.cpus = 1
-params.mem = 1  // GB
 params.publish_dir = ""  // set to empty string will disable publishDir
 
 // tool specific parmas go here, add / change as needed
-params.input_file = ""
-params.cleanup = true
+params.study_id = "TEST-PR"
+params.analysis_id = "9940db0f-c100-496a-80db-0fc100d96ac1"
 
-include { demoCopyFile } from "./local_modules/demo-copy-file"
-include { cleanupWorkdir } from './wfpr_modules/github.com/icgc-argo/data-processing-utility-tools/cleanup-workdir@1.0.0/main.nf' params([*:params, 'cleanup': false])
+params.api_token = ""
+
+params.song_cpus = 1
+params.song_mem = 1  // GB
+params.song_url = "https://song.rdpc-qa.cancercollaboratory.org"
+params.song_api_token = ""
+params.song_container_version = "4.2.1"
+
+params.score_cpus = 1
+params.score_mem = 1  // GB
+params.score_transport_mem = 1  // GB
+params.score_url = "https://score.rdpc-qa.cancercollaboratory.org"
+params.score_api_token = ""
+params.score_container_version = "5.0.0"
+
+
+song_params = [
+    *:params,
+    'cpus': params.song_cpus,
+    'mem': params.song_mem,
+    'song_url': params.song_url,
+    'song_container_version': params.song_container_version,
+    'api_token': params.song_api_token ?: params.api_token,
+    'publish_dir': ''
+]
+
+score_params = [
+    *:params,
+    'cpus': params.score_cpus,
+    'mem': params.score_mem,
+    'transport_mem': params.score_transport_mem,
+    'song_url': params.song_url,
+    'score_url': params.score_url,
+    'score_container_version': params.score_container_version,
+    'api_token': params.score_api_token ?: params.api_token
+]
+
+
+include { songGetAnalysis } from './local_modules/song_get_analysis' params(song_params)
+include { scoreDownload } from './local_modules/score_download' params(score_params)
 
 
 // please update workflow code as needed
 workflow SongScoreDownload {
   take:  // update as needed
-    input_file
+    study_id
+    analysis_id
 
+  main:
+    songGetAnalysis(study_id, analysis_id)
+    scoreDownload(songGetAnalysis.out.json, study_id, analysis_id)
 
-  main:  // update as needed
-    demoCopyFile(input_file)
-
-
-  emit:  // update as needed
-    output_file = demoCopyFile.out.output_file
-
+  emit:
+    analysis_json = songGetAnalysis.out.json
+    files = scoreDownload.out.files
 }
 
 
@@ -58,6 +93,7 @@ workflow SongScoreDownload {
 // using this command: nextflow run <git_acc>/<repo>/<pkg_name>/<main_script>.nf -r <pkg_name>.v<pkg_version> --params-file xxx
 workflow {
   SongScoreDownload(
-    file(params.input_file)
+    params.study_id,
+    params.analysis_id
   )
 }

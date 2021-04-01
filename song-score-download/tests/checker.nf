@@ -29,61 +29,62 @@ version = '2.6.0'  // package version
 
 // universal params
 params.publish_dir = ""
-params.container = ""
-params.container_registry = ""
-params.container_version = ""
 
 // tool specific parmas go here, add / change as needed
-params.input_file = ""
-params.expected_output = ""
-params.cleanup = false
+params.study_id = ""
+params.analysis_id = ""
+
+params.api_token = ""
+
+params.song_cpus = 1
+params.song_mem = 1  // GB
+params.song_url = "https://song.rdpc-qa.cancercollaboratory.org"
+params.song_api_token = ""
+
+params.score_cpus = 1
+params.score_mem = 1  // GB
+params.score_transport_mem = 1  // GB
+params.score_url = "https://score.rdpc-qa.cancercollaboratory.org"
+params.score_api_token = ""
+
+song_params = [
+    *:params,
+    'cpus': params.song_cpus,
+    'mem': params.song_mem,
+    'song_url': params.song_url,
+    'api_token': params.song_api_token ?: params.api_token,
+    'publish_dir': ''
+]
+
+score_params = [
+    *:params,
+    'cpus': params.score_cpus,
+    'mem': params.score_mem,
+    'transport_mem': params.score_transport_mem,
+    'song_url': params.song_url,
+    'score_url': params.score_url,
+    'api_token': params.score_api_token ?: params.api_token
+]
 
 include { SongScoreDownload } from '../main'
-// include section starts
-// include section ends
-
-
-process file_smart_diff {
-  input:
-    path output_file
-    path expected_file
-
-  output:
-    stdout()
-
-  script:
-    """
-    # Note: this is only for demo purpose, please write your own 'diff' according to your own needs.
-    # remove date field before comparison eg, <div id="header_filename">Tue 19 Jan 2021<br/>test_rg_3.bam</div>
-    # sed -e 's#"header_filename">.*<br/>test_rg_3.bam#"header_filename"><br/>test_rg_3.bam</div>#'
-
-    diff <( cat ${output_file} | sed -e 's#"header_filename">.*<br/>#"header_filename"><br/>#' ) \
-         <( ([[ '${expected_file}' == *.gz ]] && gunzip -c ${expected_file} || cat ${expected_file}) | sed -e 's#"header_filename">.*<br/>#"header_filename"><br/>#' ) \
-    && ( echo "Test PASSED" && exit 0 ) || ( echo "Test FAILED, output file mismatch." && exit 1 )
-    """
-}
 
 
 workflow checker {
   take:
-    input_file
-    expected_output
+    study_id
+    analysis_id
 
   main:
     SongScoreDownload(
-      input_file
-    )
-
-    file_smart_diff(
-      SongScoreDownload.out.output_file,
-      expected_output
+      study_id,
+      analysis_id
     )
 }
 
 
 workflow {
   checker(
-    file(params.input_file),
-    file(params.expected_output)
+    params.study_id,
+    params.analysis_id
   )
 }
