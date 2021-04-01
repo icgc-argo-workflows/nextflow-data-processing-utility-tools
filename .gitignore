@@ -11,3 +11,8 @@ out
 reports
 remote_reports
 params.json
+.log
+.python-version
+.nextflow*
+outdir
+wfpr_modules/github.com/*/*/*/tests
