@@ -18,8 +18,10 @@
     "devDependencies": [],
     "contributors": [
         {
-            "name": "Junjun Zhang",
-            "email": "junjun.ca@gmail.com"
+            "name": "Alex Lepsa"
+        },
+        {
+            "name": "Junjun Zhang"
         }
     ],
     "license": "Apache License 2.0",
