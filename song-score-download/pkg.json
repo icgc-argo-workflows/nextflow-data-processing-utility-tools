@@ -1,0 +1,30 @@
+{
+    "name": "song-score-download",
+    "version": "2.6.0",
+    "description": "SONG/SCORE download",
+    "main": "main.nf",
+    "deprecated": false,
+    "keywords": [
+        "bioinformatics",
+        "data",
+        "metadata",
+        "download"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/icgc-argo/nextflow-data-processing-utility-tools.git"
+    },
+    "dependencies": [
+        "github.com/icgc-argo/data-processing-utility-tools/cleanup-workdir@1.0.0"
+    ],
+    "devDependencies": [],
+    "contributors": [
+        {
+            "name": "Junjun Zhang",
+            "email": "junjun.ca@gmail.com"
+        }
+    ],
+    "license": "Apache License 2.0",
+    "bugReport": "https://github.com/icgc-argo/nextflow-data-processing-utility-tools/issues",
+    "homepage": "https://github.com/icgc-argo/nextflow-data-processing-utility-tools#readme"
+}
