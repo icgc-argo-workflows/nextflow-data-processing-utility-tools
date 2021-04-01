@@ -27,6 +27,9 @@ params.container = ""
 params.container_registry = ""
 params.publish_dir = ""  // set to empty string will disable publishDir
 
+params.max_retries = 5  // set to 0 will disable retry
+params.first_retry_wait_time = 1  // in seconds
+
 // tool specific parmas go here, add / change as needed
 params.study_id = "TEST-PR"
 params.analysis_id = "9940db0f-c100-496a-80db-0fc100d96ac1"

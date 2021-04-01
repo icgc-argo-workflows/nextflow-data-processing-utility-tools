@@ -7,6 +7,9 @@ params.mem = 20
 
 params.publish_dir = ""
 
+params.max_retries = 5  // set to 0 will disable retry
+params.first_retry_wait_time = 1  // in seconds
+
 // required params w/ default
 params.container_version = "5.0.0"
 params.transport_mem = 2 // Transport memory is in number of GBs
@@ -20,6 +23,12 @@ params.api_token = "" // song/score API token for download process
 
 // TODO: Replace with score container once it can download files via analysis_id
 process scoreDownload {
+    maxRetries params.max_retries
+    errorStrategy {
+        sleep(Math.pow(2, task.attempt) * params.first_retry_wait_time * 1000 as long);  // backoff time increases exponentially before each retry
+        return params.max_retries ? 'retry' : 'terminate'
+    }
+
     pod = [secret: workflow.runName + "-secret", mountPath: "/tmp/rdpc_secret"]
     
     cpus params.cpus

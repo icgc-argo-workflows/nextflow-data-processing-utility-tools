@@ -30,6 +30,9 @@ version = '2.6.0'  // package version
 // universal params
 params.publish_dir = ""
 
+params.max_retries = 5  // set to 0 will disable retry
+params.first_retry_wait_time = 1  // in seconds
+
 // tool specific parmas go here, add / change as needed
 params.study_id = ""
 params.analysis_id = ""
