@@ -24,10 +24,6 @@ nextflow.enable.dsl = 2
 version = '2.6.0'  // package version
 
 // universal params go here, change default value as needed
-params.container = ""
-params.container_registry = ""
-params.publish_dir = ""  // set to empty string will disable publishDir
-
 params.max_retries = 5  // set to 0 will disable retry
 params.first_retry_wait_time = 1  // in seconds
 
@@ -58,8 +54,7 @@ song_params = [
     'mem': params.song_mem,
     'song_url': params.song_url,
     'song_container_version': params.song_container_version,
-    'api_token': params.song_api_token ?: params.api_token,
-    'publish_dir': ''
+    'api_token': params.song_api_token ?: params.api_token
 ]
 
 score_params = [
@@ -75,24 +70,25 @@ score_params = [
 
 include { songSubmit } from './local_modules/song-submit' params(song_params)
 include { songManifest } from './local_modules/song-manifest' params(song_params)
-include { scoreUpload } from './local_modules/score-upload' params(song_params)
+include { scoreUpload } from './local_modules/score-upload' params(score_params)
 include { songPublish } from './local_modules/song-publish' params(song_params)
 
 
-workflow songScoreUpload {
-    take: study_id
-    take: payload
-    take: upload
+workflow SongScoreUpload {
+    take:
+        study_id
+        payload
+        upload
 
     main:
         // Create new analysis
         songSubmit(study_id, payload)
 
         // Generate file manifest for upload
-        songManifest(study_id, songSubmit.out, upload)
+        songManifest(study_id, songSubmit.out, upload.collect())
 
         // Upload to SCORE
-        scoreUpload(songSubmit.out, songManifest.out, upload)
+        scoreUpload(songSubmit.out, songManifest.out, upload.collect())
 
         // Publish the analysis
         songPublish(study_id, scoreUpload.out.ready_to_publish)
@@ -104,6 +100,7 @@ workflow songScoreUpload {
 
 // this provides an entry point for this main script, so it can be run directly without clone the repo
 // using this command: nextflow run <git_acc>/<repo>/<pkg_name>/<main_script>.nf -r <pkg_name>.v<pkg_version> --params-file xxx
+
 workflow {
   SongScoreUpload(
     params.study_id,

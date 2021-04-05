@@ -28,10 +28,6 @@ nextflow.enable.dsl = 2
 version = '0.2.6'  // package version
 
 // universal params go here, change default value as needed
-params.container = ""
-params.container_registry = ""
-params.publish_dir = ""  // set to empty string will disable publishDir
-
 params.max_retries = 5  // set to 0 will disable retry
 params.first_retry_wait_time = 1  // in seconds
 
@@ -54,28 +50,6 @@ params.score_transport_mem = 1  // GB
 params.score_url = "https://score.rdpc-qa.cancercollaboratory.org"
 params.score_api_token = ""
 params.score_container_version = "5.0.0"
-
-
-song_params = [
-    *:params,
-    'cpus': params.song_cpus,
-    'mem': params.song_mem,
-    'song_url': params.song_url,
-    'song_container_version': params.song_container_version,
-    'api_token': params.song_api_token ?: params.api_token,
-    'publish_dir': ''
-]
-
-score_params = [
-    *:params,
-    'cpus': params.score_cpus,
-    'mem': params.score_mem,
-    'transport_mem': params.score_transport_mem,
-    'song_url': params.song_url,
-    'score_url': params.score_url,
-    'score_container_version': params.score_container_version,
-    'api_token': params.score_api_token ?: params.api_token
-]
 
 include { SongScoreUpload } from '../main'
 
