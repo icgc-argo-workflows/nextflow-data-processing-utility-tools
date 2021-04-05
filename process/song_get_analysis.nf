@@ -24,7 +24,7 @@ process songGetAnalysis {
     maxRetries params.max_retries
     errorStrategy {
         sleep(Math.pow(2, task.attempt) * params.first_retry_wait_time * 1000 as long);  // backoff time increases exponentially before each retry
-        return params.max_retries ? 'retry' : 'terminate'
+        return params.max_retries ? 'retry' : 'finish'
     }
 
     pod = [secret: workflow.runName + "-secret", mountPath: "/tmp/rdpc_secret"]

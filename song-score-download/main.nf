@@ -24,8 +24,6 @@ nextflow.enable.dsl = 2
 version = '2.6.0'  // package version
 
 // universal params go here, change default value as needed
-params.container = ""
-params.container_registry = ""
 params.publish_dir = ""  // set to empty string will disable publishDir
 
 params.max_retries = 5  // set to 0 will disable retry
@@ -73,8 +71,8 @@ score_params = [
 ]
 
 
-include { songGetAnalysis } from './local_modules/song_get_analysis' params(song_params)
-include { scoreDownload } from './local_modules/score_download' params(score_params)
+include { songGetAnalysis } from './local_modules/song-get-analysis' params(song_params)
+include { scoreDownload } from './local_modules/score-download' params(score_params)
 
 
 // please update workflow code as needed

@@ -50,24 +50,6 @@ params.score_transport_mem = 1  // GB
 params.score_url = "https://score.rdpc-qa.cancercollaboratory.org"
 params.score_api_token = ""
 
-song_params = [
-    *:params,
-    'cpus': params.song_cpus,
-    'mem': params.song_mem,
-    'song_url': params.song_url,
-    'api_token': params.song_api_token ?: params.api_token,
-    'publish_dir': ''
-]
-
-score_params = [
-    *:params,
-    'cpus': params.score_cpus,
-    'mem': params.score_mem,
-    'transport_mem': params.score_transport_mem,
-    'song_url': params.song_url,
-    'score_url': params.score_url,
-    'api_token': params.score_api_token ?: params.api_token
-]
 
 include { SongScoreDownload } from '../main'
 
