@@ -27,63 +27,79 @@
 nextflow.enable.dsl = 2
 version = '0.2.6'  // package version
 
-// universal params
-params.publish_dir = ""
+// universal params go here, change default value as needed
 params.container = ""
 params.container_registry = ""
-params.container_version = ""
+params.publish_dir = ""  // set to empty string will disable publishDir
+
+params.max_retries = 5  // set to 0 will disable retry
+params.first_retry_wait_time = 1  // in seconds
 
 // tool specific parmas go here, add / change as needed
-params.input_file = ""
-params.expected_output = ""
-params.cleanup = false
+params.study_id = "TEST-PR"
+params.payload = "NO_FILE"
+params.upload = []
+
+params.api_token = ""
+
+params.song_cpus = 1
+params.song_mem = 1  // GB
+params.song_url = "https://song.rdpc-qa.cancercollaboratory.org"
+params.song_api_token = ""
+params.song_container_version = "4.2.1"
+
+params.score_cpus = 1
+params.score_mem = 1  // GB
+params.score_transport_mem = 1  // GB
+params.score_url = "https://score.rdpc-qa.cancercollaboratory.org"
+params.score_api_token = ""
+params.score_container_version = "5.0.0"
+
+
+song_params = [
+    *:params,
+    'cpus': params.song_cpus,
+    'mem': params.song_mem,
+    'song_url': params.song_url,
+    'song_container_version': params.song_container_version,
+    'api_token': params.song_api_token ?: params.api_token,
+    'publish_dir': ''
+]
+
+score_params = [
+    *:params,
+    'cpus': params.score_cpus,
+    'mem': params.score_mem,
+    'transport_mem': params.score_transport_mem,
+    'song_url': params.song_url,
+    'score_url': params.score_url,
+    'score_container_version': params.score_container_version,
+    'api_token': params.score_api_token ?: params.api_token
+]
 
 include { SongScoreUpload } from '../main'
-// include section starts
-// include section ends
-
-
-process file_smart_diff {
-  input:
-    path output_file
-    path expected_file
-
-  output:
-    stdout()
-
-  script:
-    """
-    # Note: this is only for demo purpose, please write your own 'diff' according to your own needs.
-    # remove date field before comparison eg, <div id="header_filename">Tue 19 Jan 2021<br/>test_rg_3.bam</div>
-    # sed -e 's#"header_filename">.*<br/>test_rg_3.bam#"header_filename"><br/>test_rg_3.bam</div>#'
-
-    diff <( cat ${output_file} | sed -e 's#"header_filename">.*<br/>#"header_filename"><br/>#' ) \
-         <( ([[ '${expected_file}' == *.gz ]] && gunzip -c ${expected_file} || cat ${expected_file}) | sed -e 's#"header_filename">.*<br/>#"header_filename"><br/>#' ) \
-    && ( echo "Test PASSED" && exit 0 ) || ( echo "Test FAILED, output file mismatch." && exit 1 )
-    """
-}
 
 
 workflow checker {
   take:
-    input_file
-    expected_output
+    study_id
+    payload
+    upload
 
   main:
     SongScoreUpload(
-      input_file
+      study_id,
+      payload,
+      upload
     )
 
-    file_smart_diff(
-      SongScoreUpload.out.output_file,
-      expected_output
-    )
 }
 
 
 workflow {
   checker(
-    file(params.input_file),
-    file(params.expected_output)
+    params.study_id,
+    file(params.payload),
+    Channel.fromPath(params.upload)
   )
 }
