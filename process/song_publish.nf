@@ -5,6 +5,9 @@ nextflow.enable.dsl=2
 params.cpus = 1
 params.mem = 1
 
+params.max_retries = 5  // set to 0 will disable retry
+params.first_retry_wait_time = 1  // in seconds
+
 // required params w/ default
 params.container_version = "4.2.1"
 
@@ -16,6 +19,12 @@ params.api_token = "" // song/score API token for download process
 // --score_url        score url for download process
 
 process songPublish {
+    maxRetries params.max_retries
+    errorStrategy {
+        sleep(Math.pow(2, task.attempt) * params.first_retry_wait_time * 1000 as long);  // backoff time doubles before each retry
+        return params.max_retries ? 'retry' : 'finish'
+    }
+
     pod = [secret: workflow.runName + "-secret", mountPath: "/tmp/rdpc_secret"]
     
     cpus params.cpus
