@@ -71,8 +71,8 @@ score_params = [
 ]
 
 
-include { songGetAnalysis } from './local_modules/song-get-analysis' params(song_params)
-include { scoreDownload } from './local_modules/score-download' params(score_params)
+include { songGetAnalysis as songGet } from './local_modules/song-get-analysis' params(song_params)
+include { scoreDownload as scoreDn } from './local_modules/score-download' params(score_params)
 
 
 // please update workflow code as needed
@@ -82,12 +82,12 @@ workflow SongScoreDownload {
     analysis_id
 
   main:
-    songGetAnalysis(study_id, analysis_id)
-    scoreDownload(songGetAnalysis.out.json, study_id, analysis_id)
+    songGet(study_id, analysis_id)
+    scoreDn(songGet.out.json, study_id, analysis_id)
 
   emit:
-    analysis_json = songGetAnalysis.out.json
-    files = scoreDownload.out.files
+    analysis_json = songGet.out.json
+    files = scoreDn.out.files
 }
 
 

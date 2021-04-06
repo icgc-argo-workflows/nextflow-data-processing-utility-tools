@@ -25,7 +25,7 @@
 */
 
 nextflow.enable.dsl = 2
-version = '2.6.0'  // package version
+version = '2.6.1'  // package version
 
 // universal params
 params.publish_dir = ""
@@ -51,7 +51,7 @@ params.score_url = "https://score.rdpc-qa.cancercollaboratory.org"
 params.score_api_token = ""
 
 
-include { SongScoreDownload } from '../main'
+include { SongScoreDownload as SSDn } from '../main'
 
 
 workflow checker {
@@ -60,7 +60,7 @@ workflow checker {
     analysis_id
 
   main:
-    SongScoreDownload(
+    SSDn(
       study_id,
       analysis_id
     )
