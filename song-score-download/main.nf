@@ -21,7 +21,7 @@
 */
 
 nextflow.enable.dsl = 2
-version = '2.6.0'  // package version
+version = '2.6.1'
 
 // universal params go here, change default value as needed
 params.publish_dir = ""  // set to empty string will disable publishDir
@@ -71,8 +71,8 @@ score_params = [
 ]
 
 
-include { songGetAnalysis } from './local_modules/song-get-analysis' params(song_params)
-include { scoreDownload } from './local_modules/score-download' params(score_params)
+include { songGetAnalysis as songGet } from './local_modules/song-get-analysis' params(song_params)
+include { scoreDownload as scoreDn } from './local_modules/score-download' params(score_params)
 
 
 // please update workflow code as needed
@@ -82,12 +82,12 @@ workflow SongScoreDownload {
     analysis_id
 
   main:
-    songGetAnalysis(study_id, analysis_id)
-    scoreDownload(songGetAnalysis.out.json, study_id, analysis_id)
+    songGet(study_id, analysis_id)
+    scoreDn(songGet.out.json, study_id, analysis_id)
 
   emit:
-    analysis_json = songGetAnalysis.out.json
-    files = scoreDownload.out.files
+    analysis_json = songGet.out.json
+    files = scoreDn.out.files
 }
 
 
