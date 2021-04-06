@@ -51,7 +51,7 @@ params.score_url = "https://score.rdpc-qa.cancercollaboratory.org"
 params.score_api_token = ""
 params.score_container_version = "5.0.0"
 
-include { SongScoreUpload } from '../main'
+include { SongScoreUpload as SSUp } from '../main'
 
 
 workflow checker {
@@ -61,7 +61,7 @@ workflow checker {
     upload
 
   main:
-    SongScoreUpload(
+    SSUp(
       study_id,
       payload,
       upload

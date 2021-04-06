@@ -68,10 +68,10 @@ score_params = [
     'api_token': params.score_api_token ?: params.api_token
 ]
 
-include { songSubmit } from './local_modules/song-submit' params(song_params)
-include { songManifest } from './local_modules/song-manifest' params(song_params)
-include { scoreUpload } from './local_modules/score-upload' params(score_params)
-include { songPublish } from './local_modules/song-publish' params(song_params)
+include { songSubmit as songSub } from './local_modules/song-submit' params(song_params)
+include { songManifest as songMan } from './local_modules/song-manifest' params(song_params)
+include { scoreUpload as scoreUp } from './local_modules/score-upload' params(score_params)
+include { songPublish as songPub } from './local_modules/song-publish' params(song_params)
 
 
 workflow SongScoreUpload {
@@ -82,19 +82,19 @@ workflow SongScoreUpload {
 
     main:
         // Create new analysis
-        songSubmit(study_id, payload)
+        songSub(study_id, payload)
 
         // Generate file manifest for upload
-        songManifest(study_id, songSubmit.out, upload.collect())
+        songMan(study_id, songSub.out, upload.collect())
 
         // Upload to SCORE
-        scoreUpload(songSubmit.out, songManifest.out, upload.collect())
+        scoreUp(songSub.out, songMan.out, upload.collect())
 
         // Publish the analysis
-        songPublish(study_id, scoreUpload.out.ready_to_publish)
+        songPub(study_id, scoreUp.out.ready_to_publish)
 
     emit:
-        analysis_id = songPublish.out.analysis_id
+        analysis_id = songPub.out.analysis_id
 }
 
 
