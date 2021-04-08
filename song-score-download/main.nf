@@ -55,8 +55,7 @@ song_params = [
     'mem': params.song_mem,
     'song_url': params.song_url,
     'song_container_version': params.song_container_version,
-    'api_token': params.song_api_token ?: params.api_token,
-    'publish_dir': ''
+    'api_token': params.song_api_token ?: params.api_token
 ]
 
 score_params = [
