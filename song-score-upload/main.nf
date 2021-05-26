@@ -33,6 +33,7 @@ params.first_retry_wait_time = 1  // in seconds
 params.study_id = "TEST-PR"
 params.payload = "NO_FILE"
 params.upload = []
+params.analysis_id = ""  // optional, analysis must already exist and in UNPUBLISHED state if analysis_id provided
 
 params.api_token = ""
 
@@ -81,16 +82,20 @@ workflow SongScoreUpload {
         study_id
         payload
         upload
+        analysis_id
 
     main:
-        // Create new analysis
-        songSub(study_id, payload)
+        if (!analysis_id) {
+          // Create new analysis
+          songSub(study_id, payload)
+          analysis_id = songSub.out
+        }
 
         // Generate file manifest for upload
-        songMan(study_id, songSub.out, upload.collect())
+        songMan(study_id, analysis_id, upload.collect())
 
         // Upload to SCORE
-        scoreUp(songSub.out, songMan.out, upload.collect())
+        scoreUp(analysis_id, songMan.out, upload.collect())
 
         // Publish the analysis
         songPub(study_id, scoreUp.out.ready_to_publish)
@@ -107,6 +112,7 @@ workflow {
   SongScoreUpload(
     params.study_id,
     file(params.payload),
-    Channel.fromPath(params.upload)
+    Channel.fromPath(params.upload),
+    params.analysis_id
   )
 }
