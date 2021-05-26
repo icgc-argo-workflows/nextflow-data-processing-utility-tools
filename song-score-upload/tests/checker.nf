@@ -35,6 +35,7 @@ params.first_retry_wait_time = 1  // in seconds
 params.study_id = "TEST-PR"
 params.payload = "NO_FILE"
 params.upload = []
+params.analysis_id = ""
 
 params.api_token = ""
 
@@ -59,12 +60,14 @@ workflow checker {
     study_id
     payload
     upload
+    analysis_id
 
   main:
     SSUp(
       study_id,
       payload,
-      upload
+      upload,
+      analysis_id
     )
 
 }
@@ -74,6 +77,7 @@ workflow {
   checker(
     params.study_id,
     file(params.payload),
-    Channel.fromPath(params.upload)
+    Channel.fromPath(params.upload),
+    params.analysis_id
   )
 }
