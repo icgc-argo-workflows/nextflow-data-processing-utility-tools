@@ -25,7 +25,7 @@
 */
 
 nextflow.enable.dsl = 2
-version = '0.2.6'  // package version
+version = '2.8.0'
 
 // universal params go here, change default value as needed
 params.max_retries = 5  // set to 0 will disable retry
