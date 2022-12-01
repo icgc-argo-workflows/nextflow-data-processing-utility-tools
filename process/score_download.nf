@@ -34,8 +34,8 @@ process scoreDownload {
     cpus params.cpus
     memory "${params.mem} GB"
  
-    container "overture/score:${params.container_version}"
-    publishDir "${params.publish_dir}/${task.process.replaceAll(':', '_')}", mode: "copy", enabled: params.publish_dir
+    container "overture/score:${params.score_container_version ?: params.container_version}"
+    publishDir "${params.publish_dir}/${task.process.replaceAll(':', '_')}", mode: "copy", enabled: params.publish_dir ? true : false
 
     label "scoreDownload"
     tag "${analysis_id}"

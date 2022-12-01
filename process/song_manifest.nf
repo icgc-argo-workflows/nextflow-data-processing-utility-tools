@@ -27,14 +27,14 @@ process songManifest {
         return params.max_retries ? 'retry' : 'finish'
     }
 
-    publishDir "${params.publish_dir}/${task.process.replaceAll(':', '_')}", mode: "copy", enabled: params.publish_dir
+    publishDir "${params.publish_dir}/${task.process.replaceAll(':', '_')}", mode: "copy", enabled: params.publish_dir ? true : false
 
     pod = [secret: workflow.runName + "-secret", mountPath: "/tmp/rdpc_secret"]
     
     cpus params.cpus
     memory "${params.mem} GB"
  
-    container "overture/song-client:${params.container_version}"
+    container "overture/song-client:${params.song_container_version ?: params.container_version}"
 
     tag "${analysis_id}"
 

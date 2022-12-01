@@ -32,8 +32,8 @@ process songGetAnalysis {
     cpus params.cpus
     memory "${params.mem} GB"
  
-    container "overture/song-client:${params.container_version}"
-    publishDir "${params.publish_dir}/${task.process.replaceAll(':', '_')}", mode: "copy", enabled: params.publish_dir
+    container "overture/song-client:${params.song_container_version ?: params.container_version}"
+    publishDir "${params.publish_dir}/${task.process.replaceAll(':', '_')}", mode: "copy", enabled: params.publish_dir ? true : false
 
     tag "${analysis_id}"
 

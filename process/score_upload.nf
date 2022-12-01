@@ -31,7 +31,7 @@ process scoreUpload {
     cpus params.cpus
     memory "${params.mem} GB"
  
-    container "overture/score:${params.container_version}"
+    container "overture/score:${params.score_container_version ?: params.container_version}"
 
     tag "${analysis_id}"
 
