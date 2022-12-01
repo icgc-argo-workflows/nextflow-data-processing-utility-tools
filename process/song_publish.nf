@@ -30,7 +30,7 @@ process songPublish {
     cpus params.cpus
     memory "${params.mem} GB"
  
-    container "overture/song-client:${params.container_version}"
+    container "overture/song-client:${params.song_container_version ?: params.container_version}"
 
     tag "${analysis_id}"
     
