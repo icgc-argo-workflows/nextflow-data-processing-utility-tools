@@ -21,7 +21,7 @@
 */
 
 nextflow.enable.dsl = 2
-version = '2.6.2'
+version = '2.7.0'
 
 // universal params go here, change default value as needed
 params.publish_dir = ""  // set to empty string will disable publishDir
