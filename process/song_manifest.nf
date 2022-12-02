@@ -11,7 +11,8 @@ params.max_retries = 5  // set to 0 will disable retry
 params.first_retry_wait_time = 1  // in seconds
 
 // required params w/ default
-params.container_version = "4.2.1"
+params.container = "ghcr.io/overture-stack/song-client"
+params.container_version = "5.0.2"
 
 // optional if secret mounted from pod else required
 params.api_token = "" // song/score API token for download process
@@ -27,15 +28,13 @@ process songManifest {
         return params.max_retries ? 'retry' : 'finish'
     }
 
+    container "${ params.song_container ?: params.container}:${params.song_container_version ?: params.container_version}"
     publishDir "${params.publish_dir}/${task.process.replaceAll(':', '_')}", mode: "copy", enabled: params.publish_dir ? true : false
 
     pod = [secret: workflow.runName + "-secret", mountPath: "/tmp/rdpc_secret"]
     
     cpus params.cpus
     memory "${params.mem} GB"
- 
-    container "overture/song-client:${params.song_container_version ?: params.container_version}"
-
     tag "${analysis_id}"
 
     input:
