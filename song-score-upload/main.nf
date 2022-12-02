@@ -41,21 +41,23 @@ params.song_cpus = 1
 params.song_mem = 1  // GB
 params.song_url = "https://song.rdpc-qa.cancercollaboratory.org"
 params.song_api_token = ""
-params.song_container_version = "4.2.1"
+params.song_container = "ghcr.io/overture-stack/song-client"
+params.song_container_version = "5.0.2"
 
 params.score_cpus = 1
 params.score_mem = 1  // GB
 params.score_transport_mem = 1  // GB
 params.score_url = "https://score.rdpc-qa.cancercollaboratory.org"
 params.score_api_token = ""
-params.score_container_version = "5.0.0"
-
+params.score_container = "ghcr.io/overture-stack/score"
+params.score_container_version = "5.8.1"
 
 song_params = [
     *:params,
     'cpus': params.song_cpus,
     'mem': params.song_mem,
     'song_url': params.song_url,
+    'song_container': params.song_container,
     'song_container_version': params.song_container_version,
     'api_token': params.song_api_token ?: params.api_token
 ]
@@ -67,6 +69,7 @@ score_params = [
     'transport_mem': params.score_transport_mem,
     'song_url': params.song_url,
     'score_url': params.score_url,
+    'score_container': params.score_container,
     'score_container_version': params.score_container_version,
     'api_token': params.score_api_token ?: params.api_token
 ]

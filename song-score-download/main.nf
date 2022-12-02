@@ -21,7 +21,7 @@
 */
 
 nextflow.enable.dsl = 2
-version = '2.6.2'
+version = '2.8.0'
 
 // universal params go here, change default value as needed
 params.publish_dir = ""  // set to empty string will disable publishDir
@@ -30,8 +30,8 @@ params.max_retries = 5  // set to 0 will disable retry
 params.first_retry_wait_time = 1  // in seconds
 
 // tool specific parmas go here, add / change as needed
-params.study_id = "TEST-PR"
-params.analysis_id = "9940db0f-c100-496a-80db-0fc100d96ac1"
+params.study_id = ""
+params.analysis_id = ""
 
 params.api_token = ""
 
@@ -39,14 +39,16 @@ params.song_cpus = 1
 params.song_mem = 1  // GB
 params.song_url = "https://song.rdpc-qa.cancercollaboratory.org"
 params.song_api_token = ""
-params.song_container_version = "4.2.1"
+params.song_container = "ghcr.io/overture-stack/song-client"
+params.song_container_version = "5.0.2"
 
 params.score_cpus = 1
 params.score_mem = 1  // GB
 params.score_transport_mem = 1  // GB
 params.score_url = "https://score.rdpc-qa.cancercollaboratory.org"
 params.score_api_token = ""
-params.score_container_version = "5.0.0"
+params.score_container = "ghcr.io/overture-stack/score"
+params.score_container_version = "5.8.1"
 
 
 song_params = [
@@ -54,6 +56,7 @@ song_params = [
     'cpus': params.song_cpus,
     'mem': params.song_mem,
     'song_url': params.song_url,
+    'song_container': params.song_container,
     'song_container_version': params.song_container_version,
     'api_token': params.song_api_token ?: params.api_token
 ]
@@ -65,6 +68,7 @@ score_params = [
     'transport_mem': params.score_transport_mem,
     'song_url': params.song_url,
     'score_url': params.score_url,
+    'score_container': params.score_container,
     'score_container_version': params.score_container_version,
     'api_token': params.score_api_token ?: params.api_token
 ]
