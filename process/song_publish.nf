@@ -34,7 +34,7 @@ process songPublish {
     container "${ params.song_container ?: params.container}:${params.song_container_version ?: params.container_version}"
 
     if (workflow.containerEngine == "singularity") {
-        containerOptions "--bind ${workDir}:/song-client/logs"
+        containerOptions "--bind \$(pwd):/song-client/logs"
     }
 
     tag "${analysis_id}"

@@ -38,7 +38,7 @@ process songManifest {
     tag "${analysis_id}"
 
     if (workflow.containerEngine == "singularity") {
-        containerOptions "--bind ${workDir}:/song-client/logs"
+        containerOptions "--bind \$(pwd):/song-client/logs"
     }
 
     input:
