@@ -35,9 +35,9 @@ process scoreUpload {
     container "${ params.score_container ?: params.container}:${params.score_container_version ?: params.container_version}"
 
     if (workflow.containerEngine == "singularity") {
-        containerOptions "--bind \$(pwd):/song-client/logs"
+        containerOptions "--bind \$(pwd):/score-client/logs"
     } else if (workflow.containerEngine == "docker") {
-        containerOptions "-v \$(pwd):/song-client/logs"
+        containerOptions "-v \$(pwd):/score-client/logs"
     }
 
     tag "${analysis_id}"
