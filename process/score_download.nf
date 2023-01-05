@@ -41,6 +41,12 @@ process scoreDownload {
     label "scoreDownload"
     tag "${analysis_id}"
 
+    if (workflow.containerEngine == "singularity") {
+        containerOptions "--bind \$(pwd):/score-client/logs"
+    } else if (workflow.containerEngine == "docker") {
+        containerOptions "-v \$(pwd):/score-client/logs"
+    }
+
     input:
         path analysis
         val study_id
