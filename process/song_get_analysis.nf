@@ -38,6 +38,12 @@ process songGetAnalysis {
 
     tag "${analysis_id}"
 
+    if (workflow.containerEngine == "singularity") {
+        containerOptions "--bind \$(pwd):/song-client/logs"
+    } else if (workflow.containerEngine == "docker") {
+        containerOptions "-v \$(pwd):/song-client/logs"
+    }
+
     input:
         val study_id
         val analysis_id
