@@ -50,7 +50,7 @@ params.score_transport_mem = 1  // GB
 params.score_url = "https://score.rdpc-qa.cancercollaboratory.org"
 params.score_api_token = ""
 params.score_container = "ghcr.io/overture-stack/score"
-params.score_container_version = "5.8.1"
+params.score_container_version = "5.9.0"
 
 song_params = [
     *:params,
