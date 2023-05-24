@@ -10,7 +10,7 @@ params.first_retry_wait_time = 1  // in seconds
 
 // required params w/ default
 params.container = "ghcr.io/overture-stack/score"
-params.container_version = "5.9.0"
+params.container_version = "latest"
 params.transport_mem = 2 // Transport memory is in number of GBs
 
 // optional if secret mounted from pod else required
