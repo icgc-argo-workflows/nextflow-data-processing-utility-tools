@@ -51,6 +51,7 @@ params.score_url = "https://score.rdpc-qa.cancercollaboratory.org"
 params.score_api_token = ""
 params.score_container = "ghcr.io/overture-stack/score"
 params.score_container_version = "latest"
+params.score_force = false
 
 song_params = [
     *:params,
@@ -71,7 +72,8 @@ score_params = [
     'score_url': params.score_url,
     'score_container': params.score_container,
     'score_container_version': params.score_container_version,
-    'api_token': params.score_api_token ?: params.api_token
+    'api_token': params.score_api_token ?: params.api_token,
+    'score_force': params.score_force
 ]
 
 include { songSubmit as songSub } from './local_modules/song-submit' params(song_params)

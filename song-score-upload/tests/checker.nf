@@ -53,6 +53,7 @@ params.score_url = "https://score.rdpc-qa.cancercollaboratory.org"
 params.score_api_token = ""
 params.score_container = "ghcr.io/overture-stack/score"
 params.score_container_version = "latest"
+params.score_force = false
 
 song_params = [
     *:params,
