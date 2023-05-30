@@ -10,12 +10,12 @@ params.first_retry_wait_time = 1  // in seconds
 
 // required params w/ default
 params.container = "ghcr.io/overture-stack/score"
-params.container_version = "5.8.1"
+params.container_version = "latest"
 params.transport_mem = 2 // Transport memory is in number of GBs
 
 // optional if secret mounted from pod else required
 params.api_token = "" // song/score API token for download process
-
+params.score_force = false
 // required params, no default
 // --song_url         song url for download process
 // --score_url        score url for download process
@@ -52,6 +52,7 @@ process scoreUpload {
 
     script:
         accessToken = params.api_token ? params.api_token : "`cat /tmp/rdpc_secret/secret`"
+        forceFlag = params.score_force ? "--force" : ""
         """
         export METADATA_URL=${params.song_url}
         export STORAGE_URL=${params.score_url}
@@ -59,6 +60,6 @@ process scoreUpload {
         export TRANSPORT_MEMORY=${params.transport_mem}
         export ACCESSTOKEN=${accessToken}
         
-        score-client upload --manifest ${manifest}
+        score-client upload --manifest ${manifest} ${forceFlag}
         """
 }
